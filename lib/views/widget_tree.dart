@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/pages/home_page.dart';
-import 'package:focus_buddy/views/pages/profile_page.dart';
+// import 'package:focus_buddy/views/pages/profile_page.dart';
+import 'package:focus_buddy/views/pages/settings_page.dart';
+import 'package:focus_buddy/views/pages/sounds_page.dart';
+import 'package:focus_buddy/views/pages/stats_page.dart';
+import 'package:focus_buddy/views/pages/timer_page.dart';
 import 'package:focus_buddy/views/widgets/navbar_widget.dart';
 
-List<Widget> pages = [HomePage(), ProfilePage()];
+const List<Widget> pages = [
+  HomePage(),
+  // ProfilePage(),
+  TimerPage(),
+  SoundsPage(),
+  StatsPage(),
+];
 
 class WidgetTree extends StatelessWidget {
   const WidgetTree({super.key});
@@ -16,13 +26,22 @@ class WidgetTree extends StatelessWidget {
         centerTitle: true,
         title: Text('Focus Buddy'),
         actions: [
-          IconButton(onPressed: () => print('impostazioni'), icon: Icon(Icons.settings))
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsPage()),
+            ),
+            icon: Icon(Icons.settings),
+          ),
         ],
       ),
       bottomNavigationBar: NavbarWidget(),
-      body: ValueListenableBuilder(valueListenable: currentPageNotifier, builder: (context, currentPage, child) {
-        return pages[currentPageNotifier.value];
-      }),
+      body: ValueListenableBuilder(
+        valueListenable: currentPageNotifier,
+        builder: (context, currentPage, child) {
+          return pages[currentPageNotifier.value];
+        },
+      ),
     );
   }
 }
