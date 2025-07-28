@@ -15,6 +15,9 @@ class WidgetTree extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Focus Buddy'),
+        actions: [
+          IconButton(onPressed: () => print('impostazioni'), icon: Icon(Icons.settings))
+        ],
       ),
       bottomNavigationBar: NavbarWidget(),
       body: ValueListenableBuilder(valueListenable: currentPageNotifier, builder: (context, currentPage, child) {
