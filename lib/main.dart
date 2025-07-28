@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/views/widget_tree.dart';
 
 void main() {
@@ -13,14 +14,18 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: false,
+        appBarTheme: KAppBar.appBarTheme(Colors.deepPurpleAccent, Colors.white),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.teal,
+          seedColor: Colors.deepPurple,
           brightness: Brightness.light,
         ),
       ),
       darkTheme: ThemeData(
+        useMaterial3: false,
+        appBarTheme: KAppBar.appBarTheme(Colors.deepPurpleAccent, Colors.white),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.teal,
+          seedColor: Colors.deepPurple,
           brightness: Brightness.dark,
         ),
       ),

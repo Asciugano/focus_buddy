@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus_buddy/data/constaints.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -6,8 +7,8 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings'),),
-      body: Center(child: Text('Settings Page'),),
+      appBar: KAppBar.appBar('Settings', []),
+      body: Center(child: Text('Settings Page', style: KTextStyle.titleText(),),),
     );
   }
 }

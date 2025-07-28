@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/pages/home_page.dart';
 // import 'package:focus_buddy/views/pages/profile_page.dart';
@@ -22,10 +23,7 @@ class WidgetTree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Focus Buddy'),
-        actions: [
+      appBar: KAppBar.appBar('Focus Buddy', [
           IconButton(
             onPressed: () => Navigator.push(
               context,
@@ -33,8 +31,20 @@ class WidgetTree extends StatelessWidget {
             ),
             icon: Icon(Icons.settings),
           ),
-        ],
-      ),
+      ]),
+      // appBar: AppBar(
+      //   toolbarHeight: 80,
+      //   title: const Text('Focus Buddy', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () => Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => SettingsPage()),
+      //       ),
+      //       icon: Icon(Icons.settings),
+      //     ),
+      //   ],
+      // ),
       bottomNavigationBar: NavbarWidget(),
       body: ValueListenableBuilder(
         valueListenable: currentPageNotifier,
