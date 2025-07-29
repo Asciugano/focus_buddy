@@ -24,7 +24,8 @@ class _CircularPercentWidgetState extends State<CircularPercentWidget> {
           center:
               widget.button ??
               Text(
-                'Mancano ${(totalTimeNotifier.value - timeElapsedNotifier.value).floor()}s',
+                // 'Mancano ${formatTime((totalTimeNotifier.value - timeElapsedNotifier.value).floor())s',
+                formatTime((totalTimeNotifier.value - timeElapsedNotifier.value).floor()),
                 style: KTextStyle.titleText(),
               ),
           progressColor: Colors.deepPurpleAccent,
@@ -34,5 +35,11 @@ class _CircularPercentWidgetState extends State<CircularPercentWidget> {
         );
       },
     );
+  }
+  
+  String formatTime(int sec) {
+    final minutes = (sec ~/ 60).toString().padLeft(2, '0');
+    final seconds = (sec % 60).toString().padLeft(2, '0');
+    return "$minutes:$seconds";
   }
 }
