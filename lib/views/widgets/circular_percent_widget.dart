@@ -15,16 +15,16 @@ class _CircularPercentWidgetState extends State<CircularPercentWidget> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: (remaningTimeNotifier),
+      valueListenable: (timeElapsedNotifier),
       builder: (context, remaningTime, _) {
         return CircularPercentIndicator(
           radius: 120.0,
           lineWidth: 12,
-          percent: remaningTimeNotifier.value / totalTimeNotifier.value,
+          percent: timeElapsedNotifier.value / totalTimeNotifier.value,
           center:
               widget.button ??
               Text(
-                'Mancano ${remaningTimeNotifier.value.floor()}s',
+                'Mancano ${(totalTimeNotifier.value - timeElapsedNotifier.value).floor()}s',
                 style: KTextStyle.titleText(),
               ),
           progressColor: Colors.deepPurpleAccent,

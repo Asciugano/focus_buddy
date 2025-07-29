@@ -18,7 +18,7 @@ class _TimerPageState extends State<TimerPage> {
   void dispose() {
     _timer?.cancel();
     totalTimeNotifier.dispose();
-    remaningTimeNotifier.dispose();
+    timeElapsedNotifier.dispose();
     super.dispose();
   }
 
@@ -53,11 +53,13 @@ class _TimerPageState extends State<TimerPage> {
     _timer?.cancel();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (remaningTimeNotifier.value > 0) {
-        remaningTimeNotifier.value--;
+      if (timeElapsedNotifier.value < totalTimeNotifier.value) {
+        timeElapsedNotifier.value++;
       } else {
         setState(() => started = false);
         timer.cancel();
+        totalTimeNotifier.value = 100;
+        timeElapsedNotifier.value = 0;
       }
     });
   }
