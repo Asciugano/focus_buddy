@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/widgets/circular_percent_widget.dart';
+import 'package:focus_buddy/views/widgets/time_picker_widget.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -17,8 +18,6 @@ class _TimerPageState extends State<TimerPage> {
   @override
   void dispose() {
     _timer?.cancel();
-    totalTimeNotifier.dispose();
-    timeElapsedNotifier.dispose();
     super.dispose();
   }
 
@@ -30,17 +29,22 @@ class _TimerPageState extends State<TimerPage> {
         children: [
           CircularPercentWidget(
             button: !started
-                // ? IconButton(
-                //     onPressed: () => startTimer(),
-                //     icon: Icon(Icons.start),
-                //   )
-                ? ElevatedButton.icon(
+                ? IconButton(
                     onPressed: startTimer,
                     icon: Icon(Icons.play_arrow),
-                    label: Text('Avvia timer'),
                   )
+                // ? ElevatedButton.icon(
+                //     onPressed: startTimer,
+                //     icon: Icon(Icons.play_arrow),
+                //     label: Text('Avvia timer'),
+                //   )
                 : null,
           ),
+          if (!started)
+            TimePickerWidget(
+              onTimeChange: (seconds) =>
+                  totalTimeNotifier.value = seconds.toDouble(),
+            ),
         ],
       ),
     );
@@ -58,7 +62,6 @@ class _TimerPageState extends State<TimerPage> {
       } else {
         setState(() => started = false);
         timer.cancel();
-        totalTimeNotifier.value = 100;
         timeElapsedNotifier.value = 0;
       }
     });
