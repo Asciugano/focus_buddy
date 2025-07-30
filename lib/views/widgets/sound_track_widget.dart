@@ -15,10 +15,17 @@ class SoundTrack extends StatelessWidget {
         return Card(
           elevation: 3,
           child: ListTile(
-            leading: Icon(
-              isPlaying ? Icons.pause : Icons.play_arrow,
+            leading: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+            title: Text(
+              sound.name,
+              style: KTextStyle.titleText(
+                isPlaying
+                    ? Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black
+                    : Colors.grey,
+              ),
             ),
-            title: Text(sound.name, style: KTextStyle.titleText(isPlaying ? Colors.white : Colors.grey),),
             onTap: () async {
               if (isPlaying) {
                 await sound.pause();
