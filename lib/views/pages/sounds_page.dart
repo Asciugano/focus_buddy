@@ -14,14 +14,6 @@ class _SoundsPageState extends State<SoundsPage> {
   final sounds = GlobalSoundService().sounds;
   
   @override
-  void dispose() {
-    for(final sound in sounds) {
-      sound.dispose();
-    }
-    super.dispose();
-  }
-  
-  @override
   Widget build(BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
