@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:focus_buddy/data/classes/AmbientSound.dart';
+import 'package:focus_buddy/data/classes/services/services.dart';
 import 'package:focus_buddy/views/widgets/sound_track_widget.dart';
 
 class SoundsPage extends StatefulWidget {
@@ -11,11 +11,7 @@ class SoundsPage extends StatefulWidget {
 
 class _SoundsPageState extends State<SoundsPage> {
   
-  final List<AmbientSound> sounds = [
-    AmbientSound('Pioggia', 'assets/sounds/rain.mp3'),
-    AmbientSound('Foresta', 'assets/sounds/forest.mp3'),
-    AmbientSound('Vento', 'assets/sounds/wind.mp3'),
-  ];
+  final sounds = GlobalSoundService().sounds;
   
   @override
   void dispose() {

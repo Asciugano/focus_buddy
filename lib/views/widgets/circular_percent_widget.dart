@@ -24,7 +24,6 @@ class _CircularPercentWidgetState extends State<CircularPercentWidget> {
           center:
               widget.button ??
               Text(
-                // 'Mancano ${formatTime((totalTimeNotifier.value - timeElapsedNotifier.value).floor())s',
                 formatTime((totalTimeNotifier.value - timeElapsedNotifier.value).floor()),
                 style: KTextStyle.titleText(),
               ),
