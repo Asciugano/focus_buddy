@@ -1,26 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:just_audio/just_audio.dart';
 
-class Ambientsound {
+class AmbientSound {
   final String name;
   final String path;
   final AudioPlayer _player = AudioPlayer();
-  bool isPlaying = false;
-  
-  Ambientsound(this.name, this.path);
-  
+  ValueNotifier<bool> isPlaying = ValueNotifier(false);
+  bool isInitialized = false;
+
+  AmbientSound(this.name, this.path);
+
   Future<void> play() async {
-    await _player.setAsset(path);
-    await _player.setLoopMode(LoopMode.all);
-    await _player.setVolume(1);
+    if (!isInitialized) {
+      await _player.setAsset(path);
+      await _player.setLoopMode(LoopMode.all);
+      await _player.setVolume(1);
+
+      isInitialized = true;
+    }
+    isPlaying.value = true;
     await _player.play();
-    isPlaying = true;
   }
-  
-  void pause() {
-    _player.pause();
-    isPlaying = false;
+
+  Future<void> pause() async {
+    isPlaying.value = false;
+    await _player.pause();
   }
-  
+
   void dispose() {
     _player.dispose();
   }

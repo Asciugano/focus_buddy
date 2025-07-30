@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/classes/AmbientSound.dart';
+import 'package:focus_buddy/views/widgets/sound_track_widget.dart';
 
 class SoundsPage extends StatefulWidget {
   const SoundsPage({super.key});
@@ -10,10 +11,10 @@ class SoundsPage extends StatefulWidget {
 
 class _SoundsPageState extends State<SoundsPage> {
   
-  final List<Ambientsound> sounds = [
-    Ambientsound('Pioggia', 'assets/sounds/rain.mp3'),
-    Ambientsound('Foresta', 'assets/sounds/forest.mp3'),
-    Ambientsound('Vento', 'assets/sounds/wind.mp3'),
+  final List<AmbientSound> sounds = [
+    AmbientSound('Pioggia', 'assets/sounds/rain.mp3'),
+    AmbientSound('Foresta', 'assets/sounds/forest.mp3'),
+    AmbientSound('Vento', 'assets/sounds/wind.mp3'),
   ];
   
   @override
@@ -32,18 +33,7 @@ class _SoundsPageState extends State<SoundsPage> {
       separatorBuilder: (_, __) => const SizedBox(height: 16,),
       itemBuilder: (context, index) {
         final sound = sounds[index];
-        return Card(
-          elevation: 3,
-          child: ListTile(
-            leading: Icon(sound.isPlaying ? Icons.pause : Icons.play_arrow),
-            title: Text(sound.name),
-            onTap: () async {
-              setState(() {
-                sound.isPlaying ? sound.pause() : sound.play();
-              });
-            },
-          ),
-        );
+        return SoundTrack(sound: sound);
       },
     );
   }
