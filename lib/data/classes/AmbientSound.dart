@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 class AmbientSound {
   final String name;
   final String path;
+  ValueNotifier<double> volume = ValueNotifier(1);
   final AudioPlayer _player = AudioPlayer();
   ValueNotifier<bool> isPlaying = ValueNotifier(false);
   bool isInitialized = false;
@@ -14,7 +15,7 @@ class AmbientSound {
     if (!isInitialized) {
       await _player.setAsset(path);
       await _player.setLoopMode(LoopMode.all);
-      await _player.setVolume(1);
+      await _player.setVolume(volume.value);
 
       isInitialized = true;
     }
@@ -25,6 +26,11 @@ class AmbientSound {
   Future<void> pause() async {
     isPlaying.value = false;
     await _player.pause();
+  }
+
+  void changeVolume(double value) {
+    volume.value = value;
+    _player.setVolume(volume.value);
   }
 
   void dispose() {
