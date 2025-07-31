@@ -12,6 +12,8 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
+  final GlobalTimerService timerService = GlobalTimerService();
+
   @override
   void dispose() {
     super.dispose();
@@ -19,8 +21,6 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalTimerService timerService = GlobalTimerService();
-
     return AnimatedBuilder(
       animation: timerService,
       builder: (context, _) {
