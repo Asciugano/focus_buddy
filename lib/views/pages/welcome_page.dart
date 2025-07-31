@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/views/widget_tree.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -30,11 +31,16 @@ class WelcomePage extends StatelessWidget {
             Expanded(child: Container()),
             SafeArea(
               child: FilledButton(
-                onPressed: () async => Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => WidgetTree()),
-                  (route) => false,
-                ),
+                onPressed: () async {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => WidgetTree()),
+                    (route) => false,
+                  );
+                  
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool(KKeys.showWelcomePage, false);
+                },
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50),
                 ),

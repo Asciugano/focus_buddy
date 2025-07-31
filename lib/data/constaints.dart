@@ -28,3 +28,7 @@ class KTextStyle {
     fontSize: 16,
   );
 }
+
+class KKeys {
+  static final String showWelcomePage = 'showWelcomePage';
+}
