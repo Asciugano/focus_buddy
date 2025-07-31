@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/pages/home_page.dart';
-// import 'package:focus_buddy/views/pages/profile_page.dart';
 import 'package:focus_buddy/views/pages/settings_page.dart';
 import 'package:focus_buddy/views/pages/sounds_page.dart';
 import 'package:focus_buddy/views/pages/stats_page.dart';
 import 'package:focus_buddy/views/pages/timer_page.dart';
 import 'package:focus_buddy/views/widgets/navbar_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const List<Widget> pages = [
   HomePage(),
