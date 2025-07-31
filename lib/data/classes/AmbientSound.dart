@@ -12,15 +12,23 @@ class AmbientSound {
   AmbientSound(this.name, this.path);
 
   Future<void> play() async {
-    if (!isInitialized) {
-      await _player.setAsset(path);
-      await _player.setLoopMode(LoopMode.all);
-      await _player.setVolume(volume.value);
+    try {
+      if (!isInitialized) {
+        try {
+          await _player.setAsset(path);
+        } catch (e) {
+          print('errore nel setAsset: $e');
+        }
+        await _player.setLoopMode(LoopMode.all);
+        await _player.setVolume(volume.value);
 
-      isInitialized = true;
+        isInitialized = true;
+      }
+      isPlaying.value = true;
+      await _player.play();
+    } catch (e) {
+      print('Errore nella riproduzione di $name: $e');
     }
-    isPlaying.value = true;
-    await _player.play();
   }
 
   Future<void> pause() async {

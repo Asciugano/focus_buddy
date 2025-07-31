@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:focus_buddy/data/classes/AmbientSound.dart';
 import 'package:focus_buddy/data/notifiers.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:vibration/vibration.dart';
 
 class GlobalSoundService {
   static final GlobalSoundService _instance = GlobalSoundService._internal();
@@ -25,25 +27,26 @@ class GlobalSoundService {
 }
 
 class GlobalTimerService with ChangeNotifier {
-  
   static final GlobalTimerService _instance = GlobalTimerService._internal();
 
   factory GlobalTimerService() => _instance;
 
   GlobalTimerService._internal();
-  
+
   Timer? _timer;
   bool started = false;
+  bool isAlarmPlaying = false;
+  final AudioPlayer _player = AudioPlayer();
 
   void start() {
     if (!started) {
       started = true;
+      isAlarmPlaying = false;
       _timer = Timer.periodic(Duration(seconds: 1), (_) {
-        if(totalTimeNotifier.value > timeElapsedNotifier.value) {
+        if (totalTimeNotifier.value > timeElapsedNotifier.value) {
           timeElapsedNotifier.value++;
           notifyListeners();
-        }
-        else {
+        } else {
           stop();
           timeElapsedNotifier.value = 0;
         }
@@ -51,10 +54,37 @@ class GlobalTimerService with ChangeNotifier {
     }
   }
 
-  void stop() {
+  Future<void> _playAlarm() async {
+    isAlarmPlaying = true;
+
+    try {
+      await _player.setAsset('assets/sounds/sveglia_fixed.mp3');
+      await _player.setLoopMode(LoopMode.one);
+      await _player.setVolume(1);
+
+      await _player.play();
+      notifyListeners();
+    } catch (e) {
+      print('errore nell\'allarme: $e');
+    }
+
+    if (await Vibration.hasVibrator()) {
+      Vibration.vibrate(duration: 1500);
+    }
+  }
+
+  void stopAlarm() async {
+    isAlarmPlaying = false;
+    await _player.pause();
+    notifyListeners();
+  }
+
+  void stop() async {
     started = false;
     _timer?.cancel();
     _timer = null;
     notifyListeners();
+
+    await _playAlarm();
   }
 }

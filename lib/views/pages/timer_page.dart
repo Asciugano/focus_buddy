@@ -29,11 +29,16 @@ class _TimerPageState extends State<TimerPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularPercentWidget(
-                button: !GlobalTimerService().started
-                    ? IconButton(
-                        onPressed: GlobalTimerService().start,
-                        icon: Icon(Icons.play_arrow),
-                      )
+                button: !timerService.started
+                    ? timerService.isAlarmPlaying
+                          ? IconButton(
+                              onPressed: timerService.stopAlarm,
+                              icon: Icon(Icons.stop),
+                            )
+                          : IconButton(
+                              onPressed: timerService.start,
+                              icon: Icon(Icons.play_arrow),
+                            )
                     : null,
               ),
               if (!GlobalTimerService().started)
