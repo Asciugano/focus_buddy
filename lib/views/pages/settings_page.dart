@@ -10,20 +10,20 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: KAppBar.appBar('Settings', []),
+      appBar: KAppBar.appBar('Impostazioni', []),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            SizedBox(height: 30,),
-            Text('Settings Page', style: KTextStyle.titleText()),
+            SizedBox(height: 30),
+            Text('Impostazioni', style: KTextStyle.titleText()),
             Expanded(child: Container()),
             SafeArea(
               child: FilledButton(
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.setBool(KKeys.showWelcomePage, true);
-                      
+
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => WelcomePage()),
@@ -32,9 +32,11 @@ class SettingsPage extends StatelessWidget {
                   currentPageNotifier.value = 0;
                 },
                 child: Row(
+                  // mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.logout),
+                    SizedBox(width: 8),
                     Text('Logout'),
                   ],
                 ),
