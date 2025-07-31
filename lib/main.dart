@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/constaints.dart';
+import 'package:focus_buddy/views/pages/welcome_page.dart';
 import 'package:focus_buddy/views/widget_tree.dart';
 
 void main() {
@@ -30,7 +31,7 @@ class App extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.system,
-      home: WidgetTree(),
+      home: WelcomePage(),
     );
   }
 }
