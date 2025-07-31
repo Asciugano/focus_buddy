@@ -23,7 +23,19 @@ class KTextStyle {
     fontSize: 18,
     fontWeight: FontWeight.bold,
   );
+
+  static TextStyle todoTitleText([Color? color, bool? isCompleted]) => TextStyle(
+    color: color ?? Colors.deepPurpleAccent,
+    decoration: isCompleted != null ? isCompleted ? TextDecoration.lineThrough : null : null,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
   
+  static TextStyle todoDescriptionText([bool? isCompleted]) => TextStyle(
+    decoration: isCompleted != null ? isCompleted ? TextDecoration.lineThrough : null : null,
+    fontSize: 16,
+  );
+
   static TextStyle descriptionText() => TextStyle(
     fontSize: 16,
   );

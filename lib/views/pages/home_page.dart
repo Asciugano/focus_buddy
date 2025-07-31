@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/constaints.dart';
+import 'package:focus_buddy/data/notifiers.dart';
+import 'package:focus_buddy/views/widgets/section_widget.dart';
+import 'package:focus_buddy/views/widgets/todo_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +14,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Home Page', style: KTextStyle.titleText()));
+    return ValueListenableBuilder(
+      valueListenable: todoListNotifier,
+      builder: (context, todoList, _) {
+        return Column(
+          children: [
+            SectionWidget(title: 'Todo'),
+          ],
+        );
+      },
+    );
   }
 }
