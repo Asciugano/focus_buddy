@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:focus_buddy/data/classes/AmbientSound.dart';
+import 'package:focus_buddy/data/classes/todo.dart';
+import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 
 class GlobalSoundService {
@@ -86,5 +90,28 @@ class GlobalTimerService with ChangeNotifier {
     notifyListeners();
 
     await _playAlarm();
+  }
+}
+
+class SharedPreferencesService {
+
+  static Future<bool> showWelcomePage() async {
+    final prefs = await SharedPreferences.getInstance();
+    return await prefs.getBool(KKeys.showWelcomePage) ?? false;
+  }
+
+  static Future<void> saveTodo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> jsonTodoList = todoListNotifier.value.map((list) => jsonEncode(list.toJson())).toList();
+    await prefs.setStringList(KKeys.todoListKey, jsonTodoList);
+  }
+  
+  static Future<void> getTodo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? jsonTodo = prefs.getStringList(KKeys.todoListKey);
+
+    if(jsonTodo != null) {
+      todoListNotifier.value = jsonTodo.map((json) => Todo.fromJson(jsonDecode(json))).toList();
+    }
   }
 }

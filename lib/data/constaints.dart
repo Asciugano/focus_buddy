@@ -43,4 +43,5 @@ class KTextStyle {
 
 class KKeys {
   static final String showWelcomePage = 'showWelcomePage';
+  static final String todoListKey = 'TodoListKey';
 }

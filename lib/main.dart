@@ -1,25 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/views/pages/welcome_page.dart';
+import 'package:focus_buddy/views/splash_screen.dart';
 import 'package:focus_buddy/views/widget_tree.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:focus_buddy/data/classes/services/services.dart';
 
 void main() {
   runApp(const App());
 }
 
-Future<Widget> _showWelcomePage() async {
-  final prefs = await SharedPreferences.getInstance();
-  final showWelcomePage = prefs.getBool(KKeys.showWelcomePage);
-  if(showWelcomePage != null) {
-    return showWelcomePage ? WelcomePage() : WidgetTree();
-  }
-  
-  return WelcomePage();
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class _AppState extends State<App> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _initAsync();
+  }
+  
+  void _initAsync() async {
+    await SharedPreferencesService.getTodo();
+  }
+  
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _disposeAsync();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+    SharedPreferencesService.saveTodo();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  void _disposeAsync() async {
+    await SharedPreferencesService.saveTodo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,21 +70,7 @@ class App extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.system,
-      home: FutureBuilder(future: _showWelcomePage(), builder: (context, snapshot) {
-        if(snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            appBar: KAppBar.appBar("Caricamento", []),
-            body: Center(child: CircularProgressIndicator(),),
-          );
-        } else if(snapshot.hasError) {
-          return Scaffold(
-            appBar: KAppBar.appBar('Errore', []),
-            body: Center(child: Text('ERRORE'),),
-          );
-        } else {
-          return snapshot.data!;
-        }
-      }),
+      home: SplashScreen(),
     );
   }
 }
