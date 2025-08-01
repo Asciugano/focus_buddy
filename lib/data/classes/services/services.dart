@@ -104,6 +104,8 @@ class SharedPreferencesService {
     final prefs = await SharedPreferences.getInstance();
     final List<String> jsonTodoList = todoListNotifier.value.map((list) => jsonEncode(list.toJson())).toList();
     await prefs.setStringList(KKeys.todoListKey, jsonTodoList);
+    
+    print('todo saved');
   }
   
   static Future<void> getTodo() async {

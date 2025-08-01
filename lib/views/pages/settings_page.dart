@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus_buddy/data/classes/services/services.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/pages/welcome_page.dart';
@@ -23,6 +24,7 @@ class SettingsPage extends StatelessWidget {
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.setBool(KKeys.showWelcomePage, true);
+                  await SharedPreferencesService.saveTodo();
 
                   Navigator.pushAndRemoveUntil(
                     context,
