@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/constaints.dart';
-import 'package:focus_buddy/views/pages/welcome_page.dart';
 import 'package:focus_buddy/views/splash_screen.dart';
-import 'package:focus_buddy/views/widget_tree.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:focus_buddy/data/classes/services/services.dart';
 
 void main() {

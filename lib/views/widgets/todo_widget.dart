@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:focus_buddy/data/classes/services/services.dart';
 import 'package:focus_buddy/data/classes/todo.dart';
 import 'package:focus_buddy/data/constaints.dart';
+import 'package:focus_buddy/data/notifiers.dart';
 
 class TodoWidget extends StatefulWidget {
   const TodoWidget({super.key, required this.todo});
@@ -16,7 +18,10 @@ class _TodoWidgetState extends State<TodoWidget> {
   Widget build(BuildContext context) {
     return Dismissible(
       key: Key('item'),
-      onDismissed: (direction) => print('delete todo'),
+      onDismissed: (direction) async {
+        todoListNotifier.value.remove(widget.todo);
+        await SharedPreferencesService.saveTodo();
+      },
       direction: DismissDirection.startToEnd,
       background: ClipRRect(
         borderRadius: BorderRadius.circular(15),

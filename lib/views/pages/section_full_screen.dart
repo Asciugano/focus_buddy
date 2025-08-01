@@ -8,11 +8,13 @@ class SectionFullScreen extends StatelessWidget {
     required this.title,
     required this.list,
     required this.itemBuilder,
+    required this.add,
   });
 
   final String title;
   final List<dynamic> list;
   final Widget Function(dynamic items) itemBuilder;
+  final Widget add;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class SectionFullScreen extends StatelessWidget {
           return itemBuilder(item);
         },
       ),
+      floatingActionButton: add,
     );
   }
 }
