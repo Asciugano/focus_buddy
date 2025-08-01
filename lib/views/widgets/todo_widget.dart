@@ -17,9 +17,10 @@ class _TodoWidgetState extends State<TodoWidget> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key('item'),
+      key: ValueKey(widget.todo.id),
       onDismissed: (direction) async {
         todoListNotifier.value.remove(widget.todo);
+        todoListNotifier.notifyListeners();
         await SharedPreferencesService.saveTodo();
       },
       direction: DismissDirection.startToEnd,

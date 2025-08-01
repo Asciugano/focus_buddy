@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/constaints.dart';
-import 'package:focus_buddy/views/pages/section_full_screen.dart';
 
 class SectionWidget extends StatelessWidget {
   const SectionWidget({

@@ -12,7 +12,7 @@ class SectionFullScreen extends StatelessWidget {
   });
 
   final String title;
-  final List<dynamic> list;
+  final ValueNotifier<List<dynamic>> list;
   final Widget Function(dynamic items) itemBuilder;
   final Widget add;
 
@@ -28,12 +28,17 @@ class SectionFullScreen extends StatelessWidget {
           icon: Icon(Icons.settings),
         ),
       ]),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          final dynamic item = list[index];
-          return itemBuilder(item);
+      body: ValueListenableBuilder(
+        valueListenable: list,
+        builder: (context, list, _) {
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              final dynamic item = list[index];
+              return itemBuilder(item);
+            },
+          );
         },
       ),
       floatingActionButton: add,

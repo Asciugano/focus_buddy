@@ -28,9 +28,12 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (todo) => TodoWidget(todo: todo),
               directionBuilder: (title) => SectionFullScreen(
                 title: title,
-                list: todoList,
+                list: todoListNotifier,
                 itemBuilder: (todo) => TodoWidget(todo: todo),
-                add: FloatingActionButton(onPressed: () => _showAddDialog(context), child: Icon(Icons.add),),
+                add: FloatingActionButton(
+                  onPressed: () => _showAddDialog(context),
+                  child: Icon(Icons.add),
+                ),
               ),
             ),
           ],
@@ -38,41 +41,58 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-  
+
   Future<void> _showAddDialog(BuildContext context) async {
     final TextEditingController title_controller = TextEditingController();
-    final TextEditingController description_controller = TextEditingController();
-    
-    return showDialog<void>(context: context, builder: (context) {
-      return AlertDialog(
-        title: Text('Crea un nuovo Todo', style: KTextStyle.titleText(),),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: title_controller,
-              decoration: const InputDecoration(labelText: 'Titolo'),
+    final TextEditingController description_controller =
+        TextEditingController();
+
+    return showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Crea un nuovo Todo', style: KTextStyle.titleText()),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: title_controller,
+                decoration: const InputDecoration(labelText: 'Titolo'),
+              ),
+              TextField(
+                controller: description_controller,
+                decoration: const InputDecoration(labelText: 'Descrizione'),
+              ),
+            ],
+          ),
+          actions: [
+            OutlinedButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Annulla'),
             ),
-            TextField(
-              controller: description_controller,
-              decoration: const InputDecoration(labelText: 'Descrizione'),
+            FilledButton(
+              onPressed: () async {
+                final String title = title_controller.text.trim();
+                final String description = description_controller.text.trim();
+                if (title.isNotEmpty && description.isNotEmpty) {
+                  todoListNotifier.value = [
+                    ...todoListNotifier.value,
+                    Todo(
+                      title: title,
+                      description: description,
+                      isCompleted: false,
+                    ),
+                  ];
+
+                  await SharedPreferencesService.saveTodo();
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text('Salva'),
             ),
           ],
-        ),
-        actions: [
-          OutlinedButton(onPressed: () => Navigator.pop(context), child: Text('Annulla')),
-          FilledButton(onPressed: () async {
-            final String title = title_controller.text.trim();
-            final String description = description_controller.text.trim();
-            if(title.isNotEmpty && description.isNotEmpty) {
-              todoListNotifier.value = [...todoListNotifier.value, Todo(title: title, description: description, isCompleted: false)];
-              
-              await SharedPreferencesService.saveTodo();
-            }
-            Navigator.of(context).pop();
-          }, child: Text('Salva')),
-        ],
-      );
-    });
+        );
+      },
+    );
   }
 }
