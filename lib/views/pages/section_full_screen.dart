@@ -8,13 +8,13 @@ class SectionFullScreen extends StatelessWidget {
     required this.title,
     required this.list,
     required this.itemBuilder,
-    required this.add,
+    this.add,
   });
 
   final String title;
   final ValueNotifier<List<dynamic>> list;
   final Widget Function(dynamic items) itemBuilder;
-  final Widget add;
+  final Widget? add;
 
   @override
   Widget build(BuildContext context) {

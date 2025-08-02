@@ -49,9 +49,7 @@ class _HomePageState extends State<HomePage> {
                     title: title,
                     list: sessionListNotifier,
                     itemBuilder: (session) => SessionWidget(session: session),
-                    add: FloatingActionButton(
-                      onPressed: () => print('premuto'),
-                    ),
+                    add: null,
                   ),
                 ),
               ],
