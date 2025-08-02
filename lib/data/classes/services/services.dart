@@ -154,7 +154,6 @@ class NotificationServices {
           presentSound: true,
         ),
       ),
-      androidAllowWhileIdle: true,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
     );
