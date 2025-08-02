@@ -15,6 +15,7 @@ class Todo {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'description': description,
       'isCompleted': isCompleted,
@@ -23,6 +24,7 @@ class Todo {
 
   factory Todo.fromJson(Map<String, dynamic> json) {
     return Todo(
+      id: json['id'],
       title: json['title'],
       description: json['description'],
       isCompleted: json['isCompleted'],
