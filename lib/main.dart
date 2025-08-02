@@ -64,7 +64,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   }
 
   void _initAsync() async {
-    await SharedPreferencesService.getTodo();
+    await SharedPreferencesService.getAll();
   }
 
   @override
@@ -78,13 +78,13 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
-      SharedPreferencesService.saveTodo();
+      SharedPreferencesService.saveAll();
     }
     super.didChangeAppLifecycleState(state);
   }
 
   void _disposeAsync() async {
-    await SharedPreferencesService.saveTodo();
+    await SharedPreferencesService.saveAll();
   }
 
   @override

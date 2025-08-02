@@ -24,7 +24,7 @@ class SettingsPage extends StatelessWidget {
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.setBool(KKeys.showWelcomePage, true);
-                  await SharedPreferencesService.saveTodo();
+                  await SharedPreferencesService.saveAll();
 
                   Navigator.pushAndRemoveUntil(
                     context,

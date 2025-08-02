@@ -17,6 +17,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _initAsync();
+  }
+  
+  void _initAsync() async {
+    await SharedPreferencesService.getAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<List<Todo>>(
