@@ -50,6 +50,12 @@
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>audio</string>
+			<string>remote-notification</string>
 		</array>
+		<key>FireBaseAppDelegateProxyEnabled</key>
+		<false />
+		
+		<key>NSUserNotificationUsageDescription</key>
+		<string>Usiamo notifiche per avvisarti quando il timer é finito</string>
 	</dict>
 </plist>

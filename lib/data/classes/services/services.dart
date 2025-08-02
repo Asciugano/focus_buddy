@@ -2,13 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_buddy/data/classes/AmbientSound.dart';
 import 'package:focus_buddy/data/classes/todo.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
+import 'package:focus_buddy/main.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class GlobalSoundService {
   static final GlobalSoundService _instance = GlobalSoundService._internal();
@@ -42,10 +47,14 @@ class GlobalTimerService with ChangeNotifier {
   bool isAlarmPlaying = false;
   final AudioPlayer _player = AudioPlayer();
 
-  void start() {
+  void start() async {
     if (!started) {
       started = true;
       isAlarmPlaying = false;
+
+      await NotificationServices.scheduleTimerFinischedNotification(
+        Duration(seconds: totalTimeNotifier.value.floor()),
+      );
       _timer = Timer.periodic(Duration(seconds: 1), (_) {
         if (totalTimeNotifier.value > timeElapsedNotifier.value) {
           timeElapsedNotifier.value++;
@@ -93,8 +102,66 @@ class GlobalTimerService with ChangeNotifier {
   }
 }
 
-class SharedPreferencesService {
+class NotificationServices {
+  static Future<void> showTimerFinishedNotification() async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'timer_channel',
+          'Timer',
+          channelDescription: 'Notifiche per il timer',
+          importance: Importance.max,
+          priority: Priority.high,
+        );
 
+    const DarwinNotificationDetails IOSDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    const NotificationDetails details = NotificationDetails(
+      android: androidDetails,
+      iOS: IOSDetails,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Tempo Scaduto',
+      'Bravo la sessione é terminata',
+      details,
+    );
+  }
+
+  static Future<void> scheduleTimerFinischedNotification(
+    Duration duration,
+  ) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Tempo Scaduto',
+      'Bravo La sessione é terminata',
+      tz.TZDateTime.now(tz.local).add(duration),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'timer_channel',
+          'Timer',
+          channelDescription: 'Notifica Timer',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+      ),
+      androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+}
+
+class SharedPreferencesService {
   static Future<bool> showWelcomePage() async {
     final prefs = await SharedPreferences.getInstance();
     return await prefs.getBool(KKeys.showWelcomePage) ?? false;
@@ -102,18 +169,22 @@ class SharedPreferencesService {
 
   static Future<void> saveTodo() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String> jsonTodoList = todoListNotifier.value.map((list) => jsonEncode(list.toJson())).toList();
+    final List<String> jsonTodoList = todoListNotifier.value
+        .map((list) => jsonEncode(list.toJson()))
+        .toList();
     await prefs.setStringList(KKeys.todoListKey, jsonTodoList);
-    
+
     print('todo saved');
   }
-  
+
   static Future<void> getTodo() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? jsonTodo = prefs.getStringList(KKeys.todoListKey);
 
-    if(jsonTodo != null) {
-      todoListNotifier.value = jsonTodo.map((json) => Todo.fromJson(jsonDecode(json))).toList();
+    if (jsonTodo != null) {
+      todoListNotifier.value = jsonTodo
+          .map((json) => Todo.fromJson(jsonDecode(json)))
+          .toList();
     }
   }
 }
