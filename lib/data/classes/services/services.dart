@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_buddy/data/classes/AmbientSound.dart';
 import 'package:focus_buddy/data/classes/Session.dart';
@@ -187,31 +188,35 @@ class SharedPreferencesService {
           .toList();
     }
   }
-  
+
   static Future<void> getSessions() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String>? jsonSessions = prefs.getStringList(KKeys.sessionListKey);
+    final List<String>? jsonSessions = prefs.getStringList(
+      KKeys.sessionListKey,
+    );
 
-    if(jsonSessions != null) {
+    if (jsonSessions != null) {
       sessionListNotifier.value = jsonSessions
           .map((json) => Session.fromJson(jsonDecode(json)))
           .toList();
     }
   }
-  
+
   static Future<void> saveSessions() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String> jsonSessionList = sessionListNotifier.value.map((list) => jsonEncode(list.toJson())).toList();
+    final List<String> jsonSessionList = sessionListNotifier.value
+        .map((list) => jsonEncode(list.toJson()))
+        .toList();
     await prefs.setStringList(KKeys.sessionListKey, jsonSessionList);
 
     print('sessions saved');
   }
-  
+
   static Future<void> getAll() async {
     await getTodo();
     await getSessions();
   }
-  
+
   static Future<void> saveAll() async {
     await saveTodo();
     await saveSessions();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/classes/Session.dart';
+import 'package:focus_buddy/data/classes/services/services.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 
@@ -23,30 +24,35 @@ class _SessionWidgetState extends State<SessionWidget> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           builder: (context) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  leading: Icon(Icons.delete, color: Colors.red),
-                  title: Text(
-                    'Elimina',
-                    style: KTextStyle.titleText(Colors.red),
+            return SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.delete, color: Colors.red),
+                    title: Text(
+                      'Elimina',
+                      style: KTextStyle.titleText(Colors.red),
+                    ),
+                    onTap: () {
+                      sessionListNotifier.value = sessionListNotifier.value
+                          .where((s) => s != widget.session)
+                          .toList();
+
+                      SharedPreferencesService.saveSessions();
+                      Navigator.pop(context);
+                    },
                   ),
-                  onTap: () {
-                    sessionListNotifier.value = sessionListNotifier.value
-                        .where((s) => s != widget.session)
-                        .toList();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.close),
-                  title: Text(
-                    'Annulla',
-                    style: KTextStyle.titleText(Colors.white),
+                  ListTile(
+                    leading: Icon(Icons.close),
+                    title: Text(
+                      'Annulla',
+                      style: KTextStyle.titleText(Colors.white),
+                    ),
+                    onTap: () => Navigator.pop(context),
                   ),
-                  onTap: () => Navigator.pop(context),
-                ),
-              ],
+                ],
+              ),
             );
           },
         );

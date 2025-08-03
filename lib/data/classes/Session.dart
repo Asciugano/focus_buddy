@@ -23,18 +23,18 @@ class Session {
       'title': title,
       'description': description,
       'valutation': valutation,
-      'duration': duration,
-      'creationDate': creationDate,
+      'duration': duration.inSeconds,
+      'creationDate': creationDate.toIso8601String(),
     };
   }
 
   factory Session.fromJson(Map<String, dynamic> json) {
     return Session(
       title: json['title'],
-      creationDate: json['creationDate'],
+      creationDate: DateTime.parse(json['creationDate']),
       description: json['description'],
-      duration: json['duration'],
-      valutation: json['valutation'],
+      duration: Duration(seconds: json['duration']),
+      valutation: (json['valutation'] as num).toDouble(),
     );
   }
 }
