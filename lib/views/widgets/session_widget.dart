@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/classes/Session.dart';
 import 'package:focus_buddy/data/constaints.dart';
+import 'package:focus_buddy/data/notifiers.dart';
 
 class SessionWidget extends StatefulWidget {
   const SessionWidget({super.key, required this.session});
@@ -15,7 +16,41 @@ class _SessionWidgetState extends State<SessionWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: () => print('elimina'),
+      onLongPress: () {
+        showModalBottomSheet(
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          builder: (context) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.delete, color: Colors.red),
+                  title: Text(
+                    'Elimina',
+                    style: KTextStyle.titleText(Colors.red),
+                  ),
+                  onTap: () {
+                    sessionListNotifier.value = sessionListNotifier.value
+                        .where((s) => s != widget.session)
+                        .toList();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.close),
+                  title: Text(
+                    'Annulla',
+                    style: KTextStyle.titleText(Colors.white),
+                  ),
+                  onTap: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
+      },
       onTap: () => print('premuta'),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 2),
