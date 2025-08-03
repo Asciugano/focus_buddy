@@ -42,8 +42,10 @@ class _TodoWidgetState extends State<TodoWidget> {
               children: [
                 Checkbox(
                   value: widget.todo.isCompleted,
-                  onChanged: (value) =>
-                      setState(() => widget.todo.isCompleted = value),
+                  onChanged: (value) {
+                    setState(() => widget.todo.isCompleted = value);
+                    todoListNotifier.notifyListeners();
+                  },
                 ),
                 SizedBox(width: 8),
                 Expanded(
