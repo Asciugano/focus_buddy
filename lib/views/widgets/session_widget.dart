@@ -39,6 +39,7 @@ class _SessionWidgetState extends State<SessionWidget> {
                           .where((s) => s != widget.session)
                           .toList();
 
+                      sessionListNotifier.notifyListeners();
                       SharedPreferencesService.saveSessions();
                       Navigator.pop(context);
                     },
