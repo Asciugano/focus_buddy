@@ -15,8 +15,8 @@ class NavbarWidget extends StatelessWidget {
             NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
             // NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
             NavigationDestination(icon: Icon(Icons.timer), label: 'Timer'),
-            NavigationDestination(icon: Icon(Icons.volume_up), label: 'Sounds'),
-            NavigationDestination(icon: Icon(Icons.star), label: 'Stats'),
+            NavigationDestination(icon: Icon(Icons.volume_up), label: 'Souni'),
+            NavigationDestination(icon: Icon(Icons.edit), label: 'Diario'),
           ],
           selectedIndex: currenPage,
           onDestinationSelected: (value) {

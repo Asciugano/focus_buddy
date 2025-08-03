@@ -4,7 +4,7 @@ import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/pages/home_page.dart';
 import 'package:focus_buddy/views/pages/settings_page.dart';
 import 'package:focus_buddy/views/pages/sounds_page.dart';
-import 'package:focus_buddy/views/pages/stats_page.dart';
+import 'package:focus_buddy/views/pages/diary_page.dart';
 import 'package:focus_buddy/views/pages/timer_page.dart';
 import 'package:focus_buddy/views/widgets/navbar_widget.dart';
 
@@ -13,7 +13,7 @@ const List<Widget> pages = [
   // ProfilePage(),
   TimerPage(),
   SoundsPage(),
-  StatsPage(),
+  DiaryPage(),
 ];
 
 class WidgetTree extends StatelessWidget {
@@ -23,13 +23,13 @@ class WidgetTree extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: KAppBar.appBar('Focus Buddy', [
-          IconButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsPage()),
-            ),
-            icon: Icon(Icons.settings),
+        IconButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage()),
           ),
+          icon: Icon(Icons.settings),
+        ),
       ]),
       bottomNavigationBar: NavbarWidget(),
       body: ValueListenableBuilder(
@@ -38,6 +38,26 @@ class WidgetTree extends StatelessWidget {
           return pages[currentPageNotifier.value];
         },
       ),
+      floatingActionButton: ValueListenableBuilder(
+        valueListenable: currentPageNotifier,
+        builder: (context, currentPage, _) {
+          return buildAddButton(context, currentPage);
+        },
+      ),
+    );
+  }
+
+  Widget buildAddButton(BuildContext context, int currentPage) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 300),
+      transitionBuilder: (child, animation) =>
+          ScaleTransition(scale: animation, child: child),
+      child: currentPage == 3
+          ? FloatingActionButton(
+              onPressed: () => print('cliccato'),
+              child: Icon(Icons.add),
+            )
+          : SizedBox.shrink(key: ValueKey('no-fab')),
     );
   }
 }
