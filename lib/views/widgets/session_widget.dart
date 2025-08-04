@@ -29,7 +29,7 @@ class _SessionWidgetState extends State<SessionWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.more_vert),
+                    leading: Icon(Icons.edit),
                     title: Text('Modifica'),
                     onTap: () async {
                       await ShowAboutServices.addSession(

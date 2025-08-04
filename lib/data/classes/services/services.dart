@@ -405,8 +405,10 @@ class ShowAboutServices {
 
                       if (session != null) {
                         final oldList = sessionListNotifier.value;
-                        final updatedList = oldList.map((s) => s.id == session.id ? newSession : s).toList();
-                        
+                        final updatedList = oldList
+                            .map((s) => s.id == session.id ? newSession : s)
+                            .toList();
+
                         sessionListNotifier.value = updatedList;
                       } else {
                         sessionListNotifier.value = [
@@ -429,16 +431,25 @@ class ShowAboutServices {
     );
   }
 
-  static Future<void> showAddTodoDialog(BuildContext context) async {
-    final TextEditingController title_controller = TextEditingController();
-    final TextEditingController description_controller =
-        TextEditingController();
+  static Future<void> showAddTodoDialog({
+    required BuildContext context,
+    Todo? todo,
+  }) async {
+    final TextEditingController title_controller = TextEditingController(
+      text: todo?.title,
+    );
+    final TextEditingController description_controller = TextEditingController(
+      text: todo?.description,
+    );
 
     return showDialog<void>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Crea un nuovo Todo', style: KTextStyle.titleText()),
+          title: Text(
+            todo != null ? 'Modifica il tuo todo' : 'Crea il tuo todo',
+            style: KTextStyle.titleText(),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -462,15 +473,26 @@ class ShowAboutServices {
                 final String title = title_controller.text.trim();
                 final String description = description_controller.text.trim();
                 if (title.isNotEmpty && description.isNotEmpty) {
-                  todoListNotifier.value = [
-                    ...todoListNotifier.value,
-                    Todo(
-                      title: title,
-                      description: description,
-                      isCompleted: false,
-                    ),
-                  ];
+                  final newTodo = Todo(
+                    title: title,
+                    description: description,
+                    isCompleted: false,
+                  );
+                  if (todo != null) {
+                    final oldList = todoListNotifier.value;
+                    final updatedList = oldList
+                        .map((t) => t.id == todo.id ? newTodo : t)
+                        .toList();
 
+                    todoListNotifier.value = updatedList;
+                  } else {
+                    todoListNotifier.value = [
+                      ...todoListNotifier.value,
+                      newTodo,
+                    ];
+                  }
+
+                  todoListNotifier.notifyListeners();
                   await SharedPreferencesService.saveTodo();
                 }
                 Navigator.of(context).pop();

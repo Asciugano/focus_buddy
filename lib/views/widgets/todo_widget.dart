@@ -18,18 +18,58 @@ class _TodoWidgetState extends State<TodoWidget> {
   Widget build(BuildContext context) {
     return Dismissible(
       key: ValueKey(widget.todo.id),
-      onDismissed: (direction) async {
-        todoListNotifier.value.remove(widget.todo);
-        todoListNotifier.notifyListeners();
-        await SharedPreferencesService.saveTodo();
+      direction: DismissDirection.horizontal,
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.startToEnd) {
+          todoListNotifier.value.remove(widget.todo);
+          todoListNotifier.notifyListeners();
+          await SharedPreferencesService.saveTodo();
+        } else if (direction == DismissDirection.endToStart) {
+          await ShowAboutServices.showAddTodoDialog(
+            context: context,
+            todo: widget.todo,
+          );
+        }
       },
-      direction: DismissDirection.startToEnd,
       background: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Container(
           color: Colors.red,
+          alignment: Alignment.centerLeft,
+          child: ListTile(
+            leading: Icon(Icons.delete, color: Colors.white),
+            title: Text(
+              'Elimina',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
+      secondaryBackground: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
           alignment: Alignment.centerRight,
-          child: ListTile(leading: Icon(Icons.delete), title: Text('Elimina')),
+          color: Colors.blue,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Modifica',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 32),
+                Icon(Icons.edit, color: Colors.white),
+              ],
+            ),
+          ),
         ),
       ),
       child: Container(
@@ -61,7 +101,9 @@ class _TodoWidgetState extends State<TodoWidget> {
                       ),
                       Text(
                         widget.todo.description,
-                        style: KTextStyle.todoDescriptionText(widget.todo.isCompleted),
+                        style: KTextStyle.todoDescriptionText(
+                          widget.todo.isCompleted,
+                        ),
                       ),
                     ],
                   ),

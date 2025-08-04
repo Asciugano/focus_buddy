@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                     list: todoListNotifier,
                     itemBuilder: (todo) => TodoWidget(todo: todo),
                     add: FloatingActionButton(
-                      onPressed: () => ShowAboutServices.showAddTodoDialog(context),
+                      onPressed: () => ShowAboutServices.showAddTodoDialog(context: context),
                       child: Icon(Icons.add),
                     ),
                   ),
