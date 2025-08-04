@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_buddy/data/classes/AmbientSound.dart';
 import 'package:focus_buddy/data/classes/Session.dart';
+import 'package:focus_buddy/data/classes/diary.dart';
 import 'package:focus_buddy/data/classes/todo.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
@@ -212,13 +213,52 @@ class SharedPreferencesService {
     print('sessions saved');
   }
 
+  static Future<void> saveDiary() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> jsonDiaryList = diaryListNotifier.value
+        .map((list) => jsonEncode(list.toJson()))
+        .toList();
+    await prefs.setStringList(KKeys.diaryListKey, jsonDiaryList);
+    
+    print('diary saved');
+  }
+  
+  static Future<void> getDiary() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? jsonDiaryList = await prefs.getStringList(KKeys.diaryListKey);
+
+    if(jsonDiaryList != null) {
+      diaryListNotifier.value = jsonDiaryList
+          .map((json) => Diary.fromJson(jsonDecode(json)))
+          .toList();
+    }
+  }
+
   static Future<void> getAll() async {
     await getTodo();
     await getSessions();
+    await getDiary();
   }
 
   static Future<void> saveAll() async {
     await saveTodo();
     await saveSessions();
+    await saveDiary();
+  }
+  
+  static Future<void> deleteAll() async {
+    todoListNotifier.value = [];
+    sessionListNotifier.value = [];
+    diaryListNotifier.value = [];
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setStringList(KKeys.todoListKey, []);
+    print('Elimintati tutti i Todo');
+
+    await prefs.setStringList(KKeys.sessionListKey, []);
+    print('Elimintati tutte le session');
+
+    await prefs.setStringList(KKeys.diaryListKey, []);
+    print('Elimintati tutte le note');
   }
 }

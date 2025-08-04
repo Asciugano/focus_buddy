@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/views/splash_screen.dart';
 import 'package:focus_buddy/data/classes/services/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;

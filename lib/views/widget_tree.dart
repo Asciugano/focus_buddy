@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:focus_buddy/data/classes/diary.dart';
+import 'package:focus_buddy/data/classes/services/services.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/pages/home_page.dart';
@@ -54,10 +56,73 @@ class WidgetTree extends StatelessWidget {
           ScaleTransition(scale: animation, child: child),
       child: currentPage == 3
           ? FloatingActionButton(
-              onPressed: () => print('cliccato'),
+              onPressed: () => _showAddDiaryDialog(context),
               child: Icon(Icons.add),
             )
           : SizedBox.shrink(key: ValueKey('no-fab')),
+    );
+  }
+
+  Future<void> _showAddDiaryDialog(BuildContext context) async {
+    final TextEditingController title_controller = TextEditingController();
+    final TextEditingController content_controller = TextEditingController();
+
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Nuova Nota',
+          style: KTextStyle.titleText().copyWith(fontSize: 24),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: title_controller,
+                decoration: InputDecoration(
+                  label: Text('Titolo', style: KTextStyle.titleText()),
+                ),
+              ),
+              TextField(
+                controller: content_controller,
+                decoration: InputDecoration(
+                  label: Text('Contenuto', style: KTextStyle.titleText()),
+                ),
+                maxLines: 5,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Annulla'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              final String title = title_controller.text.trim();
+              final String content = content_controller.text.trim();
+
+              if (title.isNotEmpty && content.isNotEmpty) {
+                Diary newDiary = Diary(
+                  title: title,
+                  content: content,
+                  creationTime: DateTime.now(),
+                );
+                diaryListNotifier.value = [
+                  ...diaryListNotifier.value,
+                  newDiary,
+                ];
+                await SharedPreferencesService.saveDiary();
+                diaryListNotifier.notifyListeners();
+              }
+              Navigator.pop(context);
+            },
+            child: Text('Salva'),
+          ),
+        ],
+      ),
     );
   }
 }

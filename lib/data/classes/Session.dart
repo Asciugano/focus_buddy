@@ -30,6 +30,7 @@ class Session {
 
   factory Session.fromJson(Map<String, dynamic> json) {
     return Session(
+      id: json['id'],
       title: json['title'],
       creationDate: DateTime.parse(json['creationDate']),
       description: json['description'],
