@@ -277,7 +277,7 @@ class ShowAboutServices {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'Nuova Nota',
+          diary != null ? 'Modifica la nota' : 'Nuova Nota',
           style: KTextStyle.titleText().copyWith(fontSize: 24),
         ),
         content: SingleChildScrollView(
@@ -358,7 +358,7 @@ class ShowAboutServices {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Sessione Completata', style: KTextStyle.titleText()),
+              title: Text(session != null ? 'Modifica la sessione' : 'Sessione Completata', style: KTextStyle.titleText()),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -397,7 +397,7 @@ class ShowAboutServices {
                         title: title,
                         creationDate: DateTime.now(),
                         valutation: valutation,
-                        duration: Duration(
+                        duration: session != null ? session.duration : Duration(
                           seconds: totalTimeNotifier.value.toInt(),
                         ),
                         description: description_controller.text.trim(),
