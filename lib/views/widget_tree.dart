@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:focus_buddy/data/classes/diary.dart';
 import 'package:focus_buddy/data/classes/services/services.dart';
 import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';

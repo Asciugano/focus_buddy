@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:focus_buddy/data/classes/Session.dart';
 import 'package:focus_buddy/data/classes/services/services.dart';
-import 'package:focus_buddy/data/constaints.dart';
 import 'package:focus_buddy/data/notifiers.dart';
 import 'package:focus_buddy/views/widgets/circular_percent_widget.dart';
 import 'package:focus_buddy/views/widgets/time_picker_widget.dart';
