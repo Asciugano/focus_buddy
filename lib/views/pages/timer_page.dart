@@ -34,7 +34,7 @@ class _TimerPageState extends State<TimerPage> {
                           ? IconButton(
                               onPressed: () {
                                 timerService.stopAlarm();
-                                ShowAboutServices.addSession(context);
+                                ShowAboutServices.addSession(context: context);
                               },
                               icon: Icon(Icons.stop),
                             )

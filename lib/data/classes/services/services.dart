@@ -342,10 +342,15 @@ class ShowAboutServices {
     );
   }
 
-  static Future<void> addSession(BuildContext context) async {
-    final title_controller = TextEditingController();
-    final description_controller = TextEditingController();
-    double valutation = 50;
+  static Future<void> addSession({
+    required BuildContext context,
+    Session? session,
+  }) async {
+    final title_controller = TextEditingController(text: session?.title);
+    final description_controller = TextEditingController(
+      text: session?.description,
+    );
+    double valutation = session != null ? session.valutation : 50;
 
     await showDialog(
       context: context,
@@ -398,10 +403,18 @@ class ShowAboutServices {
                         description: description_controller.text.trim(),
                       );
 
-                      sessionListNotifier.value = [
-                        ...sessionListNotifier.value,
-                        newSession,
-                      ];
+                      if (session != null) {
+                        final oldList = sessionListNotifier.value;
+                        final updatedList = oldList.map((s) => s.id == session.id ? newSession : s).toList();
+                        
+                        sessionListNotifier.value = updatedList;
+                      } else {
+                        sessionListNotifier.value = [
+                          ...sessionListNotifier.value,
+                          newSession,
+                        ];
+                      }
+                      sessionListNotifier.notifyListeners();
                       SharedPreferencesService.saveSessions();
                     }
                     Navigator.pop(context);

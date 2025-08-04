@@ -29,6 +29,18 @@ class _SessionWidgetState extends State<SessionWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
+                    leading: Icon(Icons.more_vert),
+                    title: Text('Modifica'),
+                    onTap: () async {
+                      await ShowAboutServices.addSession(
+                        context: context,
+                        session: widget.session,
+                      );
+
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
                     leading: Icon(Icons.delete, color: Colors.red),
                     title: Text(
                       'Elimina',
