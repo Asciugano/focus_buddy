@@ -36,7 +36,7 @@ class _TimerPageState extends State<TimerPage> {
                           ? IconButton(
                               onPressed: () {
                                 timerService.stopAlarm();
-                                _addSession(context);
+                                ShowAboutServices.addSession(context);
                               },
                               icon: Icon(Icons.stop),
                             )
@@ -53,80 +53,6 @@ class _TimerPageState extends State<TimerPage> {
                 ),
             ],
           ),
-        );
-      },
-    );
-  }
-
-  Future<void> _addSession(BuildContext context) async {
-    final title_controller = TextEditingController();
-    final description_controller = TextEditingController();
-    double valutation = 50;
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('Sessione Completata', style: KTextStyle.titleText()),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: title_controller,
-                    decoration: const InputDecoration(label: Text('Titolo')),
-                  ),
-                  TextField(
-                    controller: description_controller,
-                    decoration: const InputDecoration(
-                      label: Text('Descrizione'),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text('Valutazione'),
-                  Slider(
-                    value: valutation,
-                    min: 0,
-                    max: 100,
-                    divisions: 100,
-                    label: '$valutation',
-                    onChanged: (value) => setState(() => valutation = value),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Annulla'),
-                ),
-                FilledButton(
-                  onPressed: () {
-                    final String title = title_controller.text.trim();
-                    if (title.isNotEmpty) {
-                      final Session newSession = Session(
-                        title: title,
-                        creationDate: DateTime.now(),
-                        valutation: valutation,
-                        duration: Duration(
-                          seconds: totalTimeNotifier.value.toInt(),
-                        ),
-                        description: description_controller.text.trim(),
-                      );
-
-                      sessionListNotifier.value = [
-                        ...sessionListNotifier.value,
-                        newSession,
-                      ];
-                      SharedPreferencesService.saveSessions();
-                    }
-                    Navigator.pop(context);
-                  },
-                  child: Text('Salva'),
-                ),
-              ],
-            );
-          },
         );
       },
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus_buddy/data/classes/diary.dart';
+import 'package:focus_buddy/data/classes/services/services.dart';
 import 'package:focus_buddy/data/constaints.dart';
+import 'package:focus_buddy/data/notifiers.dart';
 
 class DiaryWidget extends StatefulWidget {
   const DiaryWidget({super.key, required this.diary});
@@ -41,13 +43,18 @@ class _DiaryWidgetState extends State<DiaryWidget> {
                       Icons.more_vert,
                       color: Theme.of(context).iconTheme.color,
                     ),
-                    onSelected: (value) {
+                    onSelected: (value) async {
                       switch (value) {
                         case 'edit':
-                          print('modifica');
+                          await ShowAboutServices.showAddDiaryDialog(
+                            context: context,
+                            diary: widget.diary,
+                          );
                           break;
                         case 'delete':
-                          print('elimina');
+                          diaryListNotifier.value.remove(widget.diary);
+                          diaryListNotifier.notifyListeners();
+                          await SharedPreferencesService.saveDiary();
                           break;
                       }
                     },
@@ -78,7 +85,10 @@ class _DiaryWidgetState extends State<DiaryWidget> {
                 style: KTextStyle.titleText().copyWith(fontSize: 24),
               ),
               const SizedBox(height: 6),
-              Text(widget.diary.content, style: KTextStyle.descriptionText().copyWith(height: 1.5)),
+              Text(
+                widget.diary.content,
+                style: KTextStyle.descriptionText().copyWith(height: 1.5),
+              ),
             ],
           ),
         ),
