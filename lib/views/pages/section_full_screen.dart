@@ -31,13 +31,22 @@ class SectionFullScreen extends StatelessWidget {
       body: ValueListenableBuilder(
         valueListenable: list,
         builder: (context, list, _) {
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              final dynamic item = list[index];
-              return itemBuilder(item);
-            },
+          return AnimatedCrossFade(
+            firstChild: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                final dynamic item = list[index];
+                return itemBuilder(item);
+              },
+            ),
+            secondChild: Center(
+              child: Text("Non c'é nulla", style: KTextStyle.titleText()),
+            ),
+            duration: Duration(milliseconds: 300),
+            crossFadeState: list.isEmpty
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
           );
         },
       ),

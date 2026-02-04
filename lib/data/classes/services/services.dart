@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_buddy/data/classes/AmbientSound.dart';
@@ -270,12 +269,13 @@ class ShowAboutServices {
     required BuildContext context,
     Diary? diary,
   }) async {
-    final title_controller = TextEditingController(text: diary?.title);
-    final content_controller = TextEditingController(text: diary?.content);
+    final titleController = TextEditingController(text: diary?.title);
+    final contentController = TextEditingController(text: diary?.content);
 
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
           diary != null ? 'Modifica la nota' : 'Nuova Nota',
           style: KTextStyle.titleText().copyWith(fontSize: 24),
@@ -285,13 +285,13 @@ class ShowAboutServices {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: title_controller,
+                controller: titleController,
                 decoration: InputDecoration(
                   label: Text('Titolo', style: KTextStyle.titleText()),
                 ),
               ),
               TextField(
-                controller: content_controller,
+                controller: contentController,
                 decoration: InputDecoration(
                   label: Text('Contenuto', style: KTextStyle.titleText()),
                 ),
@@ -307,8 +307,8 @@ class ShowAboutServices {
           ),
           FilledButton(
             onPressed: () async {
-              final String title = title_controller.text.trim();
-              final String content = content_controller.text.trim();
+              final String title = titleController.text.trim();
+              final String content = contentController.text.trim();
 
               if (title.isNotEmpty && content.isNotEmpty) {
                 Diary newDiary = Diary(
@@ -358,7 +358,12 @@ class ShowAboutServices {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text(session != null ? 'Modifica la sessione' : 'Sessione Completata', style: KTextStyle.titleText()),
+              title: Text(
+                session != null
+                    ? 'Modifica la sessione'
+                    : 'Sessione Completata',
+                style: KTextStyle.titleText(),
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -397,9 +402,11 @@ class ShowAboutServices {
                         title: title,
                         creationDate: DateTime.now(),
                         valutation: valutation,
-                        duration: session != null ? session.duration : Duration(
-                          seconds: totalTimeNotifier.value.toInt(),
-                        ),
+                        duration: session != null
+                            ? session.duration
+                            : Duration(
+                                seconds: totalTimeNotifier.value.toInt(),
+                              ),
                         description: description_controller.text.trim(),
                       );
 
@@ -435,10 +442,10 @@ class ShowAboutServices {
     required BuildContext context,
     Todo? todo,
   }) async {
-    final TextEditingController title_controller = TextEditingController(
+    final TextEditingController titleController = TextEditingController(
       text: todo?.title,
     );
-    final TextEditingController description_controller = TextEditingController(
+    final TextEditingController descriptionController = TextEditingController(
       text: todo?.description,
     );
 
@@ -446,6 +453,9 @@ class ShowAboutServices {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
             todo != null ? 'Modifica il tuo todo' : 'Crea il tuo todo',
             style: KTextStyle.titleText(),
@@ -454,11 +464,11 @@ class ShowAboutServices {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: title_controller,
+                controller: titleController,
                 decoration: const InputDecoration(labelText: 'Titolo'),
               ),
               TextField(
-                controller: description_controller,
+                controller: descriptionController,
                 decoration: const InputDecoration(labelText: 'Descrizione'),
               ),
             ],
@@ -470,8 +480,8 @@ class ShowAboutServices {
             ),
             FilledButton(
               onPressed: () async {
-                final String title = title_controller.text.trim();
-                final String description = description_controller.text.trim();
+                final String title = titleController.text.trim();
+                final String description = descriptionController.text.trim();
                 if (title.isNotEmpty && description.isNotEmpty) {
                   final newTodo = Todo(
                     title: title,

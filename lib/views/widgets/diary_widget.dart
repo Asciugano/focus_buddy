@@ -39,6 +39,9 @@ class _DiaryWidgetState extends State<DiaryWidget> {
                     style: KTextStyle.descriptionText(),
                   ),
                   PopupMenuButton<String>(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     icon: Icon(
                       Icons.more_vert,
                       color: Theme.of(context).iconTheme.color,
@@ -96,3 +99,4 @@ class _DiaryWidgetState extends State<DiaryWidget> {
     );
   }
 }
+
