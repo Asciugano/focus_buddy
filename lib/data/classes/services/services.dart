@@ -254,13 +254,10 @@ class SharedPreferencesService {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setStringList(KKeys.todoListKey, []);
-    print('Elimintati tutti i Todo');
 
     await prefs.setStringList(KKeys.sessionListKey, []);
-    print('Elimintati tutte le session');
 
     await prefs.setStringList(KKeys.diaryListKey, []);
-    print('Elimintati tutte le note');
   }
 }
 

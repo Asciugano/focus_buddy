@@ -19,6 +19,35 @@ class SettingsPage extends StatelessWidget {
             SizedBox(height: 30),
             Text('Impostazioni', style: KTextStyle.titleText()),
             Expanded(child: Container()),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () async {
+                final confirmed = await _confirmDelete(context);
+                if (confirmed != true) return;
+
+                await SharedPreferencesService.deleteAll();
+
+                if (!context.mounted) return;
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Tuti i dati sono stati eliminati'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.delete),
+                  SizedBox(width: 8),
+                  Text('Elimina tutto'),
+                ],
+              ),
+            ),
             SafeArea(
               child: FilledButton(
                 onPressed: () async {
@@ -46,6 +75,33 @@ class SettingsPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<bool?> _confirmDelete(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text("Sei Sicuro?"),
+        content: const Text(
+          'Questa azione e\' irreversibile e eliminera\' tutti i dati salvati',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Annulla'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Elimina'),
+          ),
+        ],
       ),
     );
   }

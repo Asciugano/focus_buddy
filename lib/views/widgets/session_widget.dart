@@ -147,6 +147,7 @@ class _SessionWidgetState extends State<SessionWidget> {
     final min = duration.inMinutes;
     final sec = duration.inSeconds % 60;
 
-    return '$min:$sec';
+    return '$min:$sec s';
   }
 }
+
